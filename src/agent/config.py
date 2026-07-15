@@ -8,7 +8,7 @@ load_dotenv(".env")
 
 PACKAGE_ROOT = Path(__file__).resolve().parent
 WORKSPACE_ROOT = PACKAGE_ROOT.parent
-DATA_DIR = WORKSPACE_ROOT / "src" / "memory"
+DATA_DIR = WORKSPACE_ROOT / "agent" / "memory"
 MODELS_FILE = DATA_DIR / "models.json"
 
 

@@ -1,0 +1,23 @@
+{
+  "active": "default",
+  "models": {
+    "default": {
+      "api_key_env": "OPENAI_API_KEY",
+      "base_url": "https://openrouter.ai/api/v1",
+      "model": "deepseek/deepseek-v4-flash",
+      "verify": "true",
+      "timeout": 60,
+      "max_retries": 2,
+      "max_history_messages": 16
+    },
+    "deepseek": {
+      "api_key_env": "DEEPSEEK_API_KEY",
+      "base_url": "https://openrouter.ai/api/v1",
+      "model": "deepseek/deepseek-v4-flash",
+      "verify": "true",
+      "timeout": 60,
+      "max_retries": 2,
+      "max_history_messages": 16
+    }
+  }
+}

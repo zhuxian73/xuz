@@ -40,6 +40,17 @@ def dangerous_reason(command: str) -> str:
     return ""
 
 
+def decode_bytes(data: bytes) -> str:
+    if not data:
+        return ""
+    for enc in ["utf-8", "gbk", "cp936", "latin-1"]:
+        try:
+            return data.decode(enc)
+        except UnicodeDecodeError:
+            continue
+    return data.decode("utf-8", errors="replace")
+
+
 def compact_result(tool_name: str, result):
     raw = json.dumps(result, ensure_ascii=False, indent=2) if not isinstance(result, str) else result
     if len(raw) <= 1200:
@@ -84,8 +95,17 @@ class ToolHandler:
         reason = dangerous_reason(command)
         if reason:
             return {"status": "blocked", "reason": reason, "command": command}
-        completed = subprocess.run(command, shell=True, cwd=self.cwd, text=True, capture_output=True, timeout=args.get("timeout", 20))
-        return {"status": "success" if completed.returncode == 0 else "error", "exit_code": completed.returncode, "stdout": (completed.stdout or "").strip(), "stderr": (completed.stderr or "").strip()}
+        completed = subprocess.run(
+            command,
+            shell=True,
+            cwd=self.cwd,
+            capture_output=True,
+            text=False,  # Force bytes even if PYTHONUTF8=1
+            timeout=args.get("timeout", 20)
+        )
+        stdout = decode_bytes(completed.stdout)
+        stderr = decode_bytes(completed.stderr)
+        return {"status": "success" if completed.returncode == 0 else "error", "exit_code": completed.returncode, "stdout": stdout.strip(), "stderr": stderr.strip()}
 
     def do_update_working_checkpoint(self, args):
         blob = json.dumps(args, ensure_ascii=False)

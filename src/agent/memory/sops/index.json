@@ -1,0 +1,33 @@
+[
+  {
+    "name": "file_task_sop.md",
+    "keywords": [
+      "file",
+      "read",
+      "write",
+      "文件",
+      "读取",
+      "写入"
+    ]
+  },
+  {
+    "name": "shell_task_sop.md",
+    "keywords": [
+      "run",
+      "command",
+      "shell",
+      "运行",
+      "命令"
+    ]
+  },
+  {
+    "name": "memory_task_sop.md",
+    "keywords": [
+      "remember",
+      "memory",
+      "lesson",
+      "记住",
+      "记忆"
+    ]
+  }
+]

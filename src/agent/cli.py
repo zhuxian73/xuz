@@ -1,4 +1,5 @@
 import json
+import sys
 
 from .config import add_model, list_models, set_active_model
 from .llm import OpenAICompatibleLLM
@@ -14,6 +15,7 @@ Commands:
   /add-model NAME BASE_URL MODEL [API_KEY_ENV]
   /use-model NAME
   /memory
+  /gui
   /exit
 """.strip()
 
@@ -57,6 +59,11 @@ class MiniCli:
         if cmd == "/memory":
             print(json.dumps(load_checkpoint(), ensure_ascii=False, indent=2))
             return True
+        if cmd == "/gui":
+            from .gui import launch
+            print("Launching Gradio GUI...")
+            launch()
+            return True
         return False
 
     def run(self):
@@ -76,7 +83,20 @@ class MiniCli:
 
 
 def main():
-    MiniCli().run()
+    if sys.platform == "win32":
+        try:
+            sys.stdout.reconfigure(encoding='utf-8')
+            sys.stderr.reconfigure(encoding='utf-8')
+        except AttributeError:
+            import io
+            sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+            sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
+
+    if "--gui" in sys.argv:
+        from .gui import launch
+        launch()
+    else:
+        MiniCli().run()
 
 
 if __name__ == "__main__":
